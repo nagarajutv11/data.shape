@@ -1,4 +1,4 @@
-package com.nagaraju.shape;
+package com.nagaraju.data.shape;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
