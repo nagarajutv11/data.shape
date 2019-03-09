@@ -2,15 +2,20 @@ package com.nagaraju.data.shape.shapers;
 
 import java.util.Iterator;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.nagaraju.data.shape.core.Template;
+import com.nagaraju.data.shape.expression.ExpressionBuilder;
 import com.nagaraju.data.shape.handlers.DirectoryHandler;
 import com.nagaraju.data.shape.handlers.RequestHandler;
 import com.nagaraju.data.shape.handlers.WebhookHandler;
 
-public final class ShaperBuilder {
+@Service
+public class ShaperBuilder {
 
 	private static final String TYPE = "type";
 	private static final String SPLIT_SHAPER = "split";
@@ -19,29 +24,28 @@ public final class ShaperBuilder {
 	private static final String COLLECT_SHAPER = "collect";
 	private static final String DISTRIBUTE_SHAPER = "distribute";
 
+	@Autowired
 	private WebhookHandler webhookHandler;
+	@Autowired
 	private RequestHandler requestHandler;
+	@Autowired
 	private DirectoryHandler directoryHandler;
-
-	private ShaperBuilder() {
-	}
-
-	public ShaperBuilder getInstance() {
-		return new ShaperBuilder();
-	}
+	@Autowired
+	private ExpressionBuilder expressionBuilder;
 
 	public Shaper build(Template template) throws InvalidTemplateException {
 		JsonArray json = template.getJson();
 		Shaper root = new RootShaper();
 		Iterator<JsonElement> iterator = json.iterator();
 		while (iterator.hasNext()) {
-			if (iterator.next() instanceof JsonObject) {
-				JsonObject shapeTemplate = (JsonObject) iterator.next();
+			JsonElement element = iterator.next();
+			if (element instanceof JsonObject) {
+				JsonObject shapeTemplate = (JsonObject) element;
 				Shaper next = createShaper(shapeTemplate);
-				next.init(shapeTemplate);
+				next.init(shapeTemplate, expressionBuilder);
 				root.next(next);
 			} else {
-				throw new InvalidTemplateException("Can not convert element to JSONObject: " + iterator.next());
+				throw new InvalidTemplateException("Can not convert element to JSONObject: " + element);
 			}
 		}
 		root.next(new EndShaper());

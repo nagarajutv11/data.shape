@@ -12,12 +12,12 @@ public class SplitShaper extends BaseShaper implements Shaper {
 	private SplitExpression expression;
 
 	@Override
-	public void init(JsonObject shapeTemplate) throws InvalidTemplateException {
+	public void init(JsonObject shapeTemplate, ExpressionBuilder expressionBuilder) throws InvalidTemplateException {
 		if (!shapeTemplate.has(EXP)) {
 			throw new InvalidTemplateException("`exp` is required: " + shapeTemplate);
 		}
 		String expStr = shapeTemplate.get(EXP).getAsString();
-		Expression<?> expr = ExpressionBuilder.build(expStr);
+		Expression<?> expr = expressionBuilder.build(expStr);
 		if (!(expr instanceof SplitExpression)) {
 			throw new InvalidTemplateException("Invalid expression for split shape: " + expStr);
 		}

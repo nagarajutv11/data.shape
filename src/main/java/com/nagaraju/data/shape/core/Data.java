@@ -4,17 +4,20 @@ import com.google.gson.JsonElement;
 
 public class Data {
 
+	private Data parent;
+	private JsonElement data;
+
 	public Data(Data parent, JsonElement data) {
-		// TODO Auto-generated constructor stub
+		this.parent = parent;
+		this.data = data;
 	}
 
 	public Data(Data data) {
-		// TODO Auto-generated constructor stub
+		this(data, data.data);
 	}
 
 	public JsonElement getData() {
-		// TODO Auto-generated method stub
-		return null;
+		return data;
 	}
 
 }

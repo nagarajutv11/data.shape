@@ -1,9 +1,14 @@
 package com.nagaraju.data.shape.handlers;
 
+import org.springframework.stereotype.Service;
+
 import com.nagaraju.data.shape.core.Data;
 
-public interface RequestHandler {
+@Service
+public class RequestHandler {
 
-	void send(String url, Data data);
+	public void send(String url, Data data) {
+		// TODO
+	}
 
 }

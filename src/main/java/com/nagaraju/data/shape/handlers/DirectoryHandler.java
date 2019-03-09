@@ -1,9 +1,14 @@
 package com.nagaraju.data.shape.handlers;
 
+import org.springframework.stereotype.Service;
+
 import com.nagaraju.data.shape.core.Data;
 
-public interface DirectoryHandler {
+@Service
+public class DirectoryHandler {
 
-	void save(String path, Data data);
+	public void save(String path, Data data) {
+		// TODO
+	}
 
 }

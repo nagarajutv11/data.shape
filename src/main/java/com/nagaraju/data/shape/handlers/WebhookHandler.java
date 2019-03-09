@@ -1,12 +1,23 @@
 package com.nagaraju.data.shape.handlers;
 
+import org.springframework.stereotype.Service;
+
 import com.nagaraju.data.shape.core.Data;
 
-public interface WebhookHandler {
+@Service
+public class WebhookHandler {
 
-	Webhook getWebhook(String id);
+	public Webhook getWebhook(String id) {
+		// TODO
+		return null;
+	}
 
-	boolean isValidWebhookId(String webhookId);
+	public boolean isValidWebhookId(String webhookId) {
+		// TODO
+		return false;
+	}
 
-	void send(Webhook webhook, Data data);
+	public void send(Webhook webhook, Data data) {
+		// TODO
+	}
 }

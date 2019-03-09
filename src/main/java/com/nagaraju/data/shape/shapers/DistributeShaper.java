@@ -2,6 +2,7 @@ package com.nagaraju.data.shape.shapers;
 
 import com.google.gson.JsonObject;
 import com.nagaraju.data.shape.core.Data;
+import com.nagaraju.data.shape.expression.ExpressionBuilder;
 import com.nagaraju.data.shape.handlers.DirectoryHandler;
 import com.nagaraju.data.shape.handlers.RequestHandler;
 import com.nagaraju.data.shape.handlers.Webhook;
@@ -27,7 +28,7 @@ public class DistributeShaper extends BaseShaper implements Shaper {
 	}
 
 	@Override
-	public void init(JsonObject shapeTemplate) throws InvalidTemplateException {
+	public void init(JsonObject shapeTemplate, ExpressionBuilder expressionBuilder) throws InvalidTemplateException {
 		if (shapeTemplate.has(WEBHOOK)) {
 			webhookId = shapeTemplate.get(WEBHOOK).getAsString();
 			if (!webhookHandler.isValidWebhookId(webhookId)) {

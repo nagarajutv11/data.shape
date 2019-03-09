@@ -12,12 +12,12 @@ public class FilterShaper extends BaseShaper implements Shaper {
 	private Expression<JsonElement> condition;
 
 	@Override
-	public void init(JsonObject shapeTemplate) throws InvalidTemplateException {
+	public void init(JsonObject shapeTemplate, ExpressionBuilder expressionBuilder) throws InvalidTemplateException {
 		if (!shapeTemplate.has(EXP)) {
 			throw new InvalidTemplateException("`exp` is required: " + shapeTemplate);
 		}
 		String expStr = shapeTemplate.get(EXP).getAsString();
-		Expression<JsonElement> expr = ExpressionBuilder.build(expStr);
+		Expression<JsonElement> expr = expressionBuilder.build(expStr);
 		if (!expr.isBoolean()) {
 			throw new InvalidTemplateException("Invalid filter expression, it should be bookean: " + expStr);
 		}

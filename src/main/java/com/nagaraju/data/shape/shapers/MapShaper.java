@@ -20,16 +20,16 @@ public class MapShaper extends BaseShaper implements Shaper {
 	private Set<String> removedElements;
 
 	@Override
-	public void init(JsonObject shapeTemplate) throws InvalidTemplateException {
+	public void init(JsonObject shapeTemplate, ExpressionBuilder expressionBuilder) throws InvalidTemplateException {
 		if (shapeTemplate.has(ONLY)) {
-			onlyElements = readElements(shapeTemplate.getAsJsonObject(ONLY));
+			onlyElements = readElements(shapeTemplate.getAsJsonObject(ONLY), expressionBuilder);
 			if (shapeTemplate.has(ADD) || shapeTemplate.has(REMOVE)) {
 				throw new InvalidTemplateException(
 						"Map shape should not contain `add` or `remove` along with `only` attribute");
 			}
 		} else {
 			if (shapeTemplate.has(ADD)) {
-				addedElements = readElements(shapeTemplate.getAsJsonObject(ADD));
+				addedElements = readElements(shapeTemplate.getAsJsonObject(ADD), expressionBuilder);
 			}
 			if (shapeTemplate.has(REMOVE)) {
 				removedElements = new HashSet<>();
@@ -38,10 +38,10 @@ public class MapShaper extends BaseShaper implements Shaper {
 		}
 	}
 
-	private Map<String, Expression<?>> readElements(JsonObject jsonElements) {
+	private Map<String, Expression<?>> readElements(JsonObject jsonElements, ExpressionBuilder expressionBuilder) {
 		Map<String, Expression<?>> elements = new HashMap<>();
 		jsonElements.entrySet().forEach(
-				entry -> elements.put(entry.getKey(), ExpressionBuilder.build(entry.getValue().getAsString())));
+				entry -> elements.put(entry.getKey(), expressionBuilder.build(entry.getValue().getAsString())));
 		return elements;
 	}
 

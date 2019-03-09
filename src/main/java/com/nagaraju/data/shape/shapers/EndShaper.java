@@ -2,6 +2,7 @@ package com.nagaraju.data.shape.shapers;
 
 import com.google.gson.JsonObject;
 import com.nagaraju.data.shape.core.Data;
+import com.nagaraju.data.shape.expression.ExpressionBuilder;
 
 public class EndShaper implements Shaper {
 
@@ -11,7 +12,7 @@ public class EndShaper implements Shaper {
 	}
 
 	@Override
-	public void init(JsonObject shapeTemplate) throws InvalidTemplateException {
+	public void init(JsonObject shapeTemplate, ExpressionBuilder expressionBuilder) throws InvalidTemplateException {
 		// Nothing to init
 	}
 
