@@ -12,7 +12,7 @@ HashMap memory = new HashMap();
 
 prog:   expr ;
 
-expr:  	operend (operator operend)? ;
+expr:  	operend (OPERATOR operend)* ;
 
 operend
 	:	'(' expr ')'
@@ -31,7 +31,7 @@ literal
 	|	BOOLEAN
 	;
 
-operator
+OPERATOR
 	:	'+'
 	|	'-'
 	|	'/'
@@ -49,7 +49,7 @@ BOOLEAN: 'true' | 'false' ;
 
 NUMBER: NEW_DIGIT ('.' NEW_DIGIT)? ;
 
-SQSTR : '\'' (~['] | SQUOTE)* '\'';
+SQSTR : SQUOTE (~['] | '\\\'')* SQUOTE;
 
 fragment SQUOTE: '\'';
 

@@ -4,6 +4,7 @@ import com.google.gson.JsonPrimitive;
 import com.nagaraju.data.shape.core.Data;
 
 public class StringExpression implements Expression {
+
 	private String value;
 
 	public StringExpression(String value) {
@@ -12,19 +13,15 @@ public class StringExpression implements Expression {
 
 	@Override
 	public JsonPrimitive eval(Data data) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JsonPrimitive(value);
 	}
 
 	@Override
 	public boolean isBoolean() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void addArg(Expression arg, int index) {
-		// TODO Auto-generated method stub
-
 	}
 }

@@ -26,6 +26,6 @@ public class SplitShaper extends BaseShaper implements Shaper {
 
 	@Override
 	public void shape(Data data) {
-		expression.eval(data, super::shape);
+		expression.eval(data, val -> super.shape(new Data(data, val)));
 	}
 }

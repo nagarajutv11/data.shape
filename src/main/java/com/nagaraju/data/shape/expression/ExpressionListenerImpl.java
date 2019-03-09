@@ -14,7 +14,6 @@ import com.nagaraju.data.shape.antlr.ExpressionBaseListener;
 import com.nagaraju.data.shape.antlr.ExpressionParser.ExprContext;
 import com.nagaraju.data.shape.antlr.ExpressionParser.InvocationContext;
 import com.nagaraju.data.shape.antlr.ExpressionParser.LiteralContext;
-import com.nagaraju.data.shape.antlr.ExpressionParser.OperatorContext;
 import com.nagaraju.data.shape.antlr.ExpressionParser.PathContext;
 
 public class ExpressionListenerImpl extends ExpressionBaseListener {
@@ -47,9 +46,10 @@ public class ExpressionListenerImpl extends ExpressionBaseListener {
 
 	@Override
 	public void exitExpr(ExprContext ctx) {
-		if (ctx.operator() != null) {
+		int size = ctx.OPERATOR().size();
+		for (int i = 0; i < size; i++) {
 			Expression right = queue.pop();
-			Expression op = queue.pop();
+			Expression op = findOperations(OPERATIONS, ctx.OPERATOR(i).getText());
 			Expression left = queue.pop();
 			op.addArg(left, 0);
 			op.addArg(right, 1);
@@ -72,7 +72,8 @@ public class ExpressionListenerImpl extends ExpressionBaseListener {
 	@Override
 	public void exitLiteral(LiteralContext ctx) {
 		if (ctx.SQSTR() != null) {
-			queue.push(new StringExpression(ctx.SQSTR().getText()));
+			String text = ctx.SQSTR().getText();
+			queue.push(new StringExpression(text.substring(1, text.length() - 1)));
 		} else if (ctx.BOOLEAN() != null) {
 			queue.push(new BooleanExpression(Boolean.valueOf(ctx.BOOLEAN().getText())));
 		} else if (ctx.NUMBER() != null) {
@@ -86,11 +87,6 @@ public class ExpressionListenerImpl extends ExpressionBaseListener {
 		List<String> idStrs = new ArrayList<>();
 		ids.forEach(id -> idStrs.add(id.getText()));
 		queue.push(new PathExpression(idStrs.toArray(new String[idStrs.size()])));
-	}
-
-	@Override
-	public void exitOperator(OperatorContext ctx) {
-		queue.push(findOperations(OPERATIONS, ctx.getText()));
 	}
 
 	private Expression findOperations(Map<String, Class<? extends Expression>> operations, String text) {

@@ -13,8 +13,7 @@ public class BooleanExpression implements Expression {
 
 	@Override
 	public JsonPrimitive eval(Data data) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JsonPrimitive(value);
 	}
 
 	@Override
@@ -24,8 +23,5 @@ public class BooleanExpression implements Expression {
 
 	@Override
 	public void addArg(Expression arg, int index) {
-		// TODO Auto-generated method stub
-
 	}
-
 }

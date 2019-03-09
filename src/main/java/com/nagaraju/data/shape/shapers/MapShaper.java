@@ -53,8 +53,13 @@ public class MapShaper extends BaseShaper implements Shaper {
 			super.shape(new Data(data, object));
 		} else {
 			JsonObject object = (JsonObject) data.getData();
-			addedElements.forEach((k, v) -> object.add(k, v.eval(data)));
-			removedElements.forEach(object::remove);
+			if (addedElements != null) {
+				addedElements.forEach((k, v) -> object.add(k, v.eval(data)));
+			}
+			if (removedElements != null) {
+				removedElements.forEach(object::remove);
+			}
+			super.shape(new Data(data, object));
 		}
 	}
 }

@@ -1,30 +1,41 @@
 package com.nagaraju.data.shape.expression;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.nagaraju.data.shape.core.Data;
 
 public class PathExpression implements Expression {
 
-	public PathExpression(String[] array) {
-		// TODO Auto-generated constructor stub
+	private String[] path;
+
+	public PathExpression(String[] path) {
+		this.path = path;
 	}
 
 	@Override
 	public JsonElement eval(Data data) {
-		// TODO Auto-generated method stub
-		return null;
+		JsonElement element = data.getData();
+		return findValue(element, path, 0);
+	}
+
+	private JsonElement findValue(JsonElement element, String[] path, int index) {
+		if (path.length == index || element.isJsonArray() || element.isJsonPrimitive()) {
+			return element;
+		}
+		JsonObject object = element.getAsJsonObject();
+		if (object.has(path[index])) {
+			return findValue(object.get(path[index]), path, index + 1);
+		}
+		return new JsonPrimitive("");
 	}
 
 	@Override
 	public boolean isBoolean() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public void addArg(Expression arg, int index) {
-		// TODO Auto-generated method stub
-
 	}
-
 }

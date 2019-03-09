@@ -1,34 +1,37 @@
 package com.nagaraju.data.shape.expression;
 
-import java.util.function.Consumer;
-
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.nagaraju.data.shape.core.Data;
 
 public class ElementExpression implements Expression, SplitExpression {
 
+	private Expression collection;
+
 	@Override
-	public JsonElement eval(Data data) {
-		// TODO Auto-generated method stub
-		return null;
+	public JsonArray eval(Data data) {
+		JsonElement element;
+		if (collection == null) {
+			element = data.getData();
+		} else {
+			element = collection.eval(data);
+		}
+		if (element.isJsonArray()) {
+			return element.getAsJsonArray();
+		} else {
+			JsonArray array = new JsonArray();
+			array.add(element);
+			return array;
+		}
 	}
 
 	@Override
 	public boolean isBoolean() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void addArg(Expression arg, int index) {
-		// TODO Auto-generated method stub
-
+		collection = arg;
 	}
-
-	@Override
-	public void eval(Data data, Consumer<Data> object) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

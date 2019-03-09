@@ -21,8 +21,7 @@ public class RequestHandler {
 	public void send(String url, Data data) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		HttpEntity<String> entity = new HttpEntity<String>(data.getData().toString(), headers);
+		HttpEntity<String> entity = new HttpEntity<>(data.getData().toString(), headers);
 		restTemplate.exchange(url, HttpMethod.POST, entity, String.class).getBody();
 	}
-
 }
