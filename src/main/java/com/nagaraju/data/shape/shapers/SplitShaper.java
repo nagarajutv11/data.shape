@@ -17,7 +17,7 @@ public class SplitShaper extends BaseShaper implements Shaper {
 			throw new InvalidTemplateException("`exp` is required: " + shapeTemplate);
 		}
 		String expStr = shapeTemplate.get(EXP).getAsString();
-		Expression<?> expr = expressionBuilder.build(expStr);
+		Expression expr = expressionBuilder.build(expStr);
 		if (!(expr instanceof SplitExpression)) {
 			throw new InvalidTemplateException("Invalid expression for split shape: " + expStr);
 		}

@@ -15,8 +15,8 @@ public class MapShaper extends BaseShaper implements Shaper {
 	private static final String ADD = "add";
 	private static final String REMOVE = "remove";
 	private static final String ONLY = "only";
-	private Map<String, Expression<?>> addedElements;
-	private Map<String, Expression<?>> onlyElements;
+	private Map<String, Expression> addedElements;
+	private Map<String, Expression> onlyElements;
 	private Set<String> removedElements;
 
 	@Override
@@ -38,8 +38,8 @@ public class MapShaper extends BaseShaper implements Shaper {
 		}
 	}
 
-	private Map<String, Expression<?>> readElements(JsonObject jsonElements, ExpressionBuilder expressionBuilder) {
-		Map<String, Expression<?>> elements = new HashMap<>();
+	private Map<String, Expression> readElements(JsonObject jsonElements, ExpressionBuilder expressionBuilder) {
+		Map<String, Expression> elements = new HashMap<>();
 		jsonElements.entrySet().forEach(
 				entry -> elements.put(entry.getKey(), expressionBuilder.build(entry.getValue().getAsString())));
 		return elements;

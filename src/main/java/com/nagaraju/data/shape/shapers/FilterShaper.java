@@ -9,7 +9,7 @@ import com.nagaraju.data.shape.expression.ExpressionBuilder;
 public class FilterShaper extends BaseShaper implements Shaper {
 
 	private static final String EXP = "exp";
-	private Expression<JsonElement> condition;
+	private Expression condition;
 
 	@Override
 	public void init(JsonObject shapeTemplate, ExpressionBuilder expressionBuilder) throws InvalidTemplateException {
@@ -17,7 +17,7 @@ public class FilterShaper extends BaseShaper implements Shaper {
 			throw new InvalidTemplateException("`exp` is required: " + shapeTemplate);
 		}
 		String expStr = shapeTemplate.get(EXP).getAsString();
-		Expression<JsonElement> expr = expressionBuilder.build(expStr);
+		Expression expr = expressionBuilder.build(expStr);
 		if (!expr.isBoolean()) {
 			throw new InvalidTemplateException("Invalid filter expression, it should be bookean: " + expStr);
 		}

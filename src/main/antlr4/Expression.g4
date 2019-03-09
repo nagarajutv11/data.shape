@@ -17,20 +17,18 @@ expr:  	operend (operator operend)? ;
 operend
 	:	'(' expr ')'
 	|	literal
+	|	path
 	|   invocation
 	;
 
-invocation:	function ('(' (expr (',' expr)*)? ')')? ;
+invocation:	'$' ID ('(' (expr (',' expr)*)? ')')? ;
 
-function
-	:	'$element'
-	|	'$size'
-	;
+path: ID ('.' ID)*;
 
 literal
-	:	numberLit
-	|	stringLit
-	|	booleanLit
+	:	NUMBER
+	|	SQSTR
+	|	BOOLEAN
 	;
 
 operator
@@ -47,12 +45,16 @@ operator
 	|	'='
 	;
 
-booleanLit: 'true' | 'false' ;
+BOOLEAN: 'true' | 'false' ;
 
-numberLit: NEW_DIGIT ('.' NEW_DIGIT)? ;
+NUMBER: NEW_DIGIT ('.' NEW_DIGIT)? ;
 
-stringLit: '\'' STRING_CHAR* '\'';
+SQSTR : '\'' (~['] | SQUOTE)* '\'';
+
+fragment SQUOTE: '\'';
 
 NEW_DIGIT: [0-9]+;
-STRING_CHAR : ~[;\r\n"'];
+
+ID: [a-zA-Z0-9_]+;
+
 WS  :   (' '|'\t')+ {skip();} ;
