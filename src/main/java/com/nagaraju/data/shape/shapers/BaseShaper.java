@@ -1,17 +1,32 @@
 package com.nagaraju.data.shape.shapers;
 
+import com.google.gson.JsonObject;
 import com.nagaraju.data.shape.core.Data;
 
 public abstract class BaseShaper implements Shaper {
 
+	private static final String NEXT_ATTR = "next";
 	private Shaper next;
+	private String name;
+
+	protected BaseShaper(String name) {
+		this.name = name;
+	}
 
 	@Override
-	public final void next(Shaper next) {
-		if (this.next != null) {
-			this.next.next(next);
-		} else {
-			this.next = next;
+	public String name() {
+		return name;
+	}
+
+	@Override
+	public void init(JsonObject shapeTemplate, ShaperInitContext context) throws InvalidTemplateException {
+		if (!shapeTemplate.has(NEXT_ATTR)) {
+			throw new InvalidTemplateException("next not found in shape template: " + shapeTemplate);
+		}
+		next = context.getShaper(shapeTemplate.get(NEXT_ATTR).getAsString());
+		if (next == null) {
+			throw new InvalidTemplateException(
+					"Invalid shaper name in the `next`: " + shapeTemplate.get(NEXT_ATTR).getAsString());
 		}
 	}
 

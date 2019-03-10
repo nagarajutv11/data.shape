@@ -4,20 +4,24 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.nagaraju.data.shape.core.Data;
 import com.nagaraju.data.shape.expression.Expression;
-import com.nagaraju.data.shape.expression.ExpressionBuilder;
 
 public class FilterShaper extends BaseShaper implements Shaper {
 
 	private static final String EXP = "exp";
 	private Expression condition;
 
+	public FilterShaper(String name) {
+		super(name);
+	}
+
 	@Override
-	public void init(JsonObject shapeTemplate, ExpressionBuilder expressionBuilder) throws InvalidTemplateException {
+	public void init(JsonObject shapeTemplate, ShaperInitContext context) throws InvalidTemplateException {
+		super.init(shapeTemplate, context);
 		if (!shapeTemplate.has(EXP)) {
 			throw new InvalidTemplateException("`exp` is required: " + shapeTemplate);
 		}
 		String expStr = shapeTemplate.get(EXP).getAsString();
-		Expression expr = expressionBuilder.build(expStr);
+		Expression expr = context.buildExpression(expStr);
 		if (!expr.isBoolean()) {
 			throw new InvalidTemplateException("Invalid filter expression, it should be bookean: " + expStr);
 		}

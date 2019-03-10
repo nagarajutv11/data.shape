@@ -1,18 +1,19 @@
 package com.nagaraju.data.shape.shapers;
 
 import com.google.gson.JsonObject;
-import com.nagaraju.data.shape.core.Data;
-import com.nagaraju.data.shape.expression.ExpressionBuilder;
 
 public class RootShaper extends BaseShaper implements Shaper {
 
-	@Override
-	public void shape(Data data) {
-		super.shape(data);
+	private static final String NEXT_ATTR = "next";
+
+	public RootShaper() {
+		super("root");
 	}
 
 	@Override
-	public void init(JsonObject shapeTemplate, ExpressionBuilder expressionBuilder) {
-		// Nothing to init
+	public void init(JsonObject shapeTemplate, ShaperInitContext context) throws InvalidTemplateException {
+		JsonObject obj = new JsonObject();
+		obj.addProperty(NEXT_ATTR, "main");
+		super.init(obj, context);
 	}
 }

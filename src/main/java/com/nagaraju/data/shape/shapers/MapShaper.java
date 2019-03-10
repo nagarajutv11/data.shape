@@ -8,7 +8,6 @@ import java.util.Set;
 import com.google.gson.JsonObject;
 import com.nagaraju.data.shape.core.Data;
 import com.nagaraju.data.shape.expression.Expression;
-import com.nagaraju.data.shape.expression.ExpressionBuilder;
 
 public class MapShaper extends BaseShaper implements Shaper {
 
@@ -19,17 +18,22 @@ public class MapShaper extends BaseShaper implements Shaper {
 	private Map<String, Expression> onlyElements;
 	private Set<String> removedElements;
 
+	public MapShaper(String name) {
+		super(name);
+	}
+
 	@Override
-	public void init(JsonObject shapeTemplate, ExpressionBuilder expressionBuilder) throws InvalidTemplateException {
+	public void init(JsonObject shapeTemplate, ShaperInitContext context) throws InvalidTemplateException {
+		super.init(shapeTemplate, context);
 		if (shapeTemplate.has(ONLY)) {
-			onlyElements = readElements(shapeTemplate.getAsJsonObject(ONLY), expressionBuilder);
+			onlyElements = readElements(shapeTemplate.getAsJsonObject(ONLY), context);
 			if (shapeTemplate.has(ADD) || shapeTemplate.has(REMOVE)) {
 				throw new InvalidTemplateException(
 						"Map shape should not contain `add` or `remove` along with `only` attribute");
 			}
 		} else {
 			if (shapeTemplate.has(ADD)) {
-				addedElements = readElements(shapeTemplate.getAsJsonObject(ADD), expressionBuilder);
+				addedElements = readElements(shapeTemplate.getAsJsonObject(ADD), context);
 			}
 			if (shapeTemplate.has(REMOVE)) {
 				removedElements = new HashSet<>();
@@ -38,10 +42,10 @@ public class MapShaper extends BaseShaper implements Shaper {
 		}
 	}
 
-	private Map<String, Expression> readElements(JsonObject jsonElements, ExpressionBuilder expressionBuilder) {
+	private Map<String, Expression> readElements(JsonObject jsonElements, ShaperInitContext context) {
 		Map<String, Expression> elements = new HashMap<>();
 		jsonElements.entrySet().forEach(
-				entry -> elements.put(entry.getKey(), expressionBuilder.build(entry.getValue().getAsString())));
+				entry -> elements.put(entry.getKey(), context.buildExpression(entry.getValue().getAsString())));
 		return elements;
 	}
 
